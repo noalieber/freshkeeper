@@ -1,0 +1,470 @@
+{
+  "info": {
+    "name": "FreshKeeper API",
+    "description": "FreshKeeper - Food Inventory & Recipe Management Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "GET / - Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/",
+            "header": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /users - List All Users (admin)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "GET /users - List All Users (employee)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users",
+            "header": [{ "key": "x-user-role", "value": "employee" }]
+          }
+        },
+        {
+          "name": "GET /users/:id - Get User by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/1",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "GET /users/:id - User Not Found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/999",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "POST /users - Create User (admin)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users",
+            "header": [
+              { "key": "x-user-role", "value": "admin" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Dan\",\n  \"lastName\": \"Cohen\",\n  \"userRole\": \"consumer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /users - Validation Error (missing firstName)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users",
+            "header": [
+              { "key": "x-user-role", "value": "admin" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lastName\": \"Cohen\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /users - Forbidden (consumer cannot create)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"userRole\": \"consumer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /users/:id - Update User",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/2",
+            "header": [
+              { "key": "x-user-role", "value": "admin" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Bobby\",\n  \"userRole\": \"employee\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /users/:id - Delete User (admin)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/4",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "DELETE /users/:id - Forbidden (employee cannot delete)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/3",
+            "header": [{ "key": "x-user-role", "value": "employee" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Items (Pantry Inventory)",
+      "item": [
+        {
+          "name": "GET /items - List All Items",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/items",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /items?storageType=fridge - Filter by Storage",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/items?storageType=fridge",
+              "query": [{ "key": "storageType", "value": "fridge" }]
+            },
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /items?expiringSoon=true - Items Expiring Soon",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/items?expiringSoon=true",
+              "query": [{ "key": "expiringSoon", "value": "true" }]
+            },
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /items?category=vegetables - Filter by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/items?category=vegetables",
+              "query": [{ "key": "category", "value": "vegetables" }]
+            },
+            "header": [{ "key": "x-user-role", "value": "employee" }]
+          }
+        },
+        {
+          "name": "GET /items/:id - Get Item by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/items/1",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /items/:id - Item Not Found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/items/999",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "POST /items - Add Item to Pantry (employee)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/items",
+            "header": [
+              { "key": "x-user-role", "value": "employee" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Yogurt\",\n  \"quantity\": 3,\n  \"unit\": \"units\",\n  \"expirationDate\": \"2025-05-10\",\n  \"storageType\": \"fridge\",\n  \"category\": \"dairy\",\n  \"userId\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /items - Validation Error (missing quantity)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/items",
+            "header": [
+              { "key": "x-user-role", "value": "employee" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cheese\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /items - Forbidden (consumer cannot add items)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/items",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Butter\",\n  \"quantity\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /items/:id - Update Item Quantity (consumer)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/items/1",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /items/:id - Delete Item (admin)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/items/6",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "DELETE /items/:id - Forbidden (employee cannot delete)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/items/5",
+            "header": [{ "key": "x-user-role", "value": "employee" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipes",
+      "item": [
+        {
+          "name": "GET /recipes - List All Recipes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/recipes",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /recipes?tags=vegetarian - Filter by Tag",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/recipes?tags=vegetarian",
+              "query": [{ "key": "tags", "value": "vegetarian" }]
+            },
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /recipes?tags=vegetarian,gluten-free - Multiple Tags",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/recipes?tags=vegetarian,gluten-free",
+              "query": [{ "key": "tags", "value": "vegetarian,gluten-free" }]
+            },
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /recipes/:id - Get Recipe by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/recipes/1",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "GET /recipes/:id - Recipe Not Found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/recipes/999",
+            "header": [{ "key": "x-user-role", "value": "consumer" }]
+          }
+        },
+        {
+          "name": "POST /recipes - Create Recipe (admin)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes",
+            "header": [
+              { "key": "x-user-role", "value": "admin" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Veggie Omelette\",\n  \"ingredients\": [\"eggs\", \"tomatoes\", \"spinach\", \"olive oil\"],\n  \"instructions\": \"1. Whisk eggs. 2. Sauté vegetables. 3. Pour eggs and cook until set.\",\n  \"prepTime\": 5,\n  \"cookTime\": 8,\n  \"servings\": 2,\n  \"tags\": [\"vegetarian\", \"gluten-free\", \"quick\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes - Validation Error (missing ingredients)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes",
+            "header": [
+              { "key": "x-user-role", "value": "admin" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mystery Dish\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /recipes/:id - Update Recipe (employee)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/recipes/3",
+            "header": [
+              { "key": "x-user-role", "value": "employee" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"servings\": 4,\n  \"tags\": [\"vegetarian\", \"vegan\", \"quick\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /recipes/:id - Delete Recipe (admin)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/recipes/5",
+            "header": [{ "key": "x-user-role", "value": "admin" }]
+          }
+        },
+        {
+          "name": "POST /recipes/suggest - Suggest Recipes by Ingredients",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/suggest",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ingredients\": [\"eggs\", \"spinach\", \"milk\", \"butter\"],\n  \"preferences\": [\"vegetarian\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes/suggest - No Preferences Filter",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/suggest",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ingredients\": [\"chicken breast\", \"pasta\", \"tomatoes\", \"garlic\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes/suggest - Validation Error (no ingredients)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/suggest",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferences\": [\"vegetarian\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes/predict-expiration - Dairy in Fridge",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/predict-expiration",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"dairy\",\n  \"storageType\": \"fridge\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes/predict-expiration - Meat in Freezer",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/predict-expiration",
+            "header": [
+              { "key": "x-user-role", "value": "employee" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"meat\",\n  \"storageType\": \"freezer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /recipes/predict-expiration - Validation Error",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/recipes/predict-expiration",
+            "header": [
+              { "key": "x-user-role", "value": "consumer" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"dairy\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
