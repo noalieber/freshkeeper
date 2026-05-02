@@ -60,7 +60,7 @@ app.use((err, req, res, next) => {
 
 // ── Start server ───────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`✅ FreshKeeper API running on http://localhost:${PORT}`);
+  console.log(`FreshKeeper API running on http://localhost:${PORT}`);
   console.log(`   Roles: admin | employee | consumer`);
   console.log(`   Set header: x-user-role: admin (or employee / consumer)`);
 });
