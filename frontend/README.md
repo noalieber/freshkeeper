@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-The app opens at **http://localhost:3001** (React uses 3001 automatically if 3000 is taken by the backend).
+The app opens at **http://localhost:5173** 
 
 ### API Base URL
 All API calls go to: `http://localhost:3000`
@@ -31,8 +31,8 @@ All API calls go to: `http://localhost:3000`
 
 1. Make sure the **backend is running** (`npm start` in the freshkeeper backend folder)
 2. Start the frontend (`npm start` in this folder)
-3. Open http://localhost:3001
-4. Log in with any email/password (min 6 chars) and choose a role
+3. Open http://localhost:5173
+4. Log in with your registered email and password
 
 ---
 
@@ -50,12 +50,20 @@ All API calls go to: `http://localhost:3000`
 
 | Page | Route | Description |
 |------|-------|-------------|
-| Login | `/login` | Sign in with email + password |
+| Login | `/login` | Log in with your registered email and password |
 | Dashboard | `/dashboard` | Overview of pantry and expiring items |
 | Pantry | `/items` | Full inventory — cards or table view |
 | Recipes | `/recipes` | Browse recipes, AI ingredient matcher |
 | Users | `/users` | Admin only — manage all users |
 | Settings | `/settings` | Profile, preferences, notifications |
+
+## Login Credentials
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@fresh.com | admin123 | admin |
+| employee@fresh.com | emp123 | employee |
+| consumer@fresh.com | cons123 | consumer |
 
 ---
 

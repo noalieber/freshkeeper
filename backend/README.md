@@ -30,15 +30,9 @@ npm run dev
 
 ## Authentication & Roles
 
-This API uses **simulated role-based access control**. There is no login system.
+This API uses role-based access control with a login endpoint.
 
-Include the `x-user-role` header in every request:
-
-| Header | Value |
-|--------|-------|
-| `x-user-role` | `admin` |
-| `x-user-role` | `employee` |
-| `x-user-role` | `consumer` |
+After login, the user role is determined automatically based on the credentials provided.
 
 ### Role permissions
 
@@ -55,6 +49,16 @@ Include the `x-user-role` header in every request:
 | Delete recipes | ✅ | ❌ | ❌ |
 | Suggest recipes | ✅ | ✅ | ✅ |
 | Predict expiration | ✅ | ✅ | ✅ |
+
+---
+
+## Login Credentials
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@fresh.com | admin123 | admin |
+| employee@fresh.com | emp123 | employee |
+| consumer@fresh.com | cons123 | consumer |
 
 ---
 
@@ -316,7 +320,7 @@ Filter recipes by comma-separated tags.
 
 1. IDs are numeric, auto-incremented integers starting from 1.
 2. All data is stored in-memory and resets on server restart.
-3. Authentication is simulated via `x-user-role` header — no real login required.
+3. Authentication is done via POST /users/login with email and password.
 4. `createDate` and `updateDate` are set automatically by the server.
 5. Recipe suggestion requires at least 50% ingredient match to be returned.
 6. Items expiring within 3 days are considered "expiring soon".
